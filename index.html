@@ -3,13 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Freeman&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+        h1 {
+            font-family: "Freeman", sans-serif;
+            text-align: center;
+            font-style: normal;
+        }
+
+        .game-menu {
+            font-size: 1rem;
+            max-width: 100%;
+            font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+        }
+
+        label {
+            display: block;
+            color: rgba(0,0,0,.87);
+            font-size: .92857143em;
+            font-weight: 1200;
+            text-transform: none;
+            font-family: "Roboto Condensed", sans-serif;
+            font-optical-sizing: auto;
+            font-style: normal;
+        }
+
+        input {
+            font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;line-height: 1.4285em; border: 1px solid #d4d4d5; margin: 0 -1px;
+            margin-bottom: 0px;
+            width: calc(100% - (-1px * 2));
+            max-width: calc(100% - (-1px * 2)); bottom: 0;
+            top: 0;
+            margin-top: 0.7rem;
+            border-radius: .28571429rem .28571429rem .28571429rem .28571429rem; transition: box-shadow 0.2s ease, padding 0.2s ease;
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0); padding: 0.7em 1em 0.7em;
+        }
+
+        .gameId {
+            margin-top: 0.7rem;
+        }
+
+        .joinField {
+            margin-top: 1.6rem;
+        }
+
+        .createButton {
+            cursor: pointer;
+            display: inline-block;
+            min-height: 1em;
+            outline: 0;
+            border: none;
+            vertical-align: baseline;
+            background: rgb(163, 202, 241) none;
+            color: rgb(69, 156, 243);
+            font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+            margin-left: .25em;
+            padding: .78571429em 1.5em .78571429em;
+            text-transform: none;
+            text-shadow: none;
+            font-weight: 700;
+            line-height: 1em;
+            font-style: normal;
+            text-align: center;
+            text-decoration: none;
+            border-radius: .28571429rem;
+            box-shadow: 0 0 0 1px transparent inset,0 0 0 0 rgb(109, 178, 247) inset;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            transition: opacity .1s ease,background-color .1s ease,color .1s ease,box-shadow .1s ease,background .1s ease;
+            will-change: '';
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .joinButton {
+            cursor: pointer;
+            display: inline-block;
+            min-height: 1em;
+            outline: 0;
+            border: none;
+            vertical-align: baseline;
+            background: rgb(163, 202, 241) none;
+            color: rgb(69, 156, 243);
+            font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+            margin: 0 .25em 0 0;
+            padding: .78571429em 1.5em .78571429em;
+            text-transform: none;
+            text-shadow: none;
+            font-weight: 700;
+            line-height: 1em;
+            font-style: normal;
+            text-align: center;
+            text-decoration: none;
+            border-radius: .28571429rem;
+            box-shadow: 0 0 0 1px transparent inset,0 0 0 0 rgb(109, 178, 247) inset;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            transition: opacity .1s ease,background-color .1s ease,color .1s ease,box-shadow .1s ease,background .1s ease;
+            will-change: '';
+            -webkit-tap-highlight-color: transparent;
+            margin-top: 1rem;
+        }
+    </style>
     <title>Document</title>
 </head>
 <body>
     <h1>Ball Game</h1>
-    <button id = 'btnCreate'>New Game</button>
-    <button id = 'btnJoin'>Join Game</button>
-    <input type = 'text' id = 'txtGameId'>
+
+    <div class="game-menu">
+        <div>
+            <label>Créer une partie privé</label>
+            <p id="game-id" class="gameId"></p>
+            <button id = 'btnCreate' class="createButton">New Game</button>
+        </div>
+        
+        <div class="joinField">
+            <label>Rejoindre une partie</label>
+            <input type = 'text' id = 'txtGameId' placeholder="Entrez l'id d'une partie">
+            <button id = 'btnJoin' class="joinButton">Join Game</button>
+        </div>
+    </div>
+
     <div id  = 'divPlayers'></div>
     <div id  = 'divBoard'></div>
 
@@ -25,6 +145,8 @@
         const txtGameId = document.getElementById("txtGameId");
         const divPlayers = document.getElementById("divPlayers");
         const divBoard = document.getElementById("divBoard");
+        const user = document.getElementById("username")
+        const gameLink = document.getElementById("game-id")
 
     
         //wiring events
@@ -61,12 +183,14 @@
             if (response.method === "connect"){
                 clientId = response.clientId;
                 console.log("Client id Set successfully " + clientId)
+                txtGameId.value = ``
             }
 
             //create
             if (response.method === "create"){
                 gameId = response.game.id;
-                console.log("game successfully created with id " + response.game.id + " with " + response.game.balls + " balls")  
+                console.log("game successfully created with id " + response.game.id + " with " + response.game.balls + " balls") 
+                gameLink.textContent = `Lien de la partie (à partager si vous jouez à plusieurs): ${gameId}`
             }
 
 
