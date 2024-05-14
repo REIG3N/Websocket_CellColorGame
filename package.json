@@ -1,0 +1,19 @@
+{
+  "name": "websocket_color_game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/ws": "^8.5.10"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "websocket": "^1.0.35"
+  }
+}
